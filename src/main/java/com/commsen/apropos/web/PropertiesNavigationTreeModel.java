@@ -47,7 +47,8 @@ public class PropertiesNavigationTreeModel extends DefaultTreeModel implements E
 	 */
 	public PropertiesNavigationTreeModel() {
 		super(buildNodes());
-		EventManager.getInstance().addListener(Event.SET_ADDED, this);
+		EventManager.getInstance().addListener(Event.PACKAGE_ADDED, this);
+		EventManager.getInstance().addListener(Event.PACKAGE_DELETED, this);
 	}
 
 

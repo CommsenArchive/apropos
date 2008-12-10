@@ -25,6 +25,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.wings.SButton;
 import org.wings.SComboBox;
+import org.wings.SComponent;
 import org.wings.SDialog;
 import org.wings.SGridLayout;
 import org.wings.SLabel;
@@ -36,10 +37,13 @@ import org.wings.STextField;
 import com.commsen.apropos.core.PropertiesException;
 import com.commsen.apropos.core.PropertiesManager;
 import com.commsen.apropos.core.PropertyPackage;
+import com.commsen.apropos.web.AproposSession;
 import com.commsen.apropos.web.event.Event;
 import com.commsen.apropos.web.event.EventManager;
 
 /**
+ * This class represents a dialog window used to add new properties package.
+ * 
  * @author Milen Dyankov
  * 
  */
@@ -50,9 +54,40 @@ public class AddPropertyPackageDialog extends SDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Text field for package's name
+	 */
+	final STextField nameField = new STextField();
 
 	/**
-	 * 
+	 * Text area for package's description
+	 */
+	final STextArea descriptionField = new STextArea();
+
+	/**
+	 * ComoboBox with all possible parents
+	 */
+	final SComboBox parentField = new SComboBox();
+
+
+	/**
+	 * Method called to (re)initialize the dialog according to current application state. Currently
+	 * it only rebuilds the {@link #parentField} to fill it with all possible parents.
+	 */
+	public void initialize() {
+		parentField.removeAllItems();
+		if (!CollectionUtils.isEmpty(PropertiesManager.getPropertyPackagesNames())) {
+			parentField.addItem(null);
+			for (String name : PropertiesManager.getPropertyPackagesNames()) {
+				parentField.addItem(name);
+			}
+			parentField.setSelectedItem(AproposSession.getCurrentPropertyPackage().getName());
+		}
+	}
+
+
+	/**
+	 * Constructs new dialog
 	 */
 	public AddPropertyPackageDialog() {
 		setModal(true);
@@ -60,21 +95,12 @@ public class AddPropertyPackageDialog extends SDialog {
 		setTitle("Create properties set");
 		SPanel panel = new SPanel(new SGridLayout(2));
 
-		final STextField nameField = new STextField();
 		panel.add(new SLabel("name"));
 		panel.add(nameField);
 
-		final STextArea descriptionField = new STextArea();
 		panel.add(new SLabel("description"));
 		panel.add(descriptionField);
 
-		final SComboBox parentField = new SComboBox();
-		if (!CollectionUtils.isEmpty(PropertiesManager.getPropertyPackagesNames())) {
-			parentField.addItem(null);
-			for (String name : PropertiesManager.getPropertyPackagesNames()) {
-				parentField.addItem(name);
-			}
-		}
 		panel.add(new SLabel("parent"));
 		panel.add(parentField);
 
@@ -111,7 +137,7 @@ public class AddPropertyPackageDialog extends SDialog {
 					return;
 				}
 
-				EventManager.getInstance().sendEvent(Event.SET_ADDED);
+				EventManager.getInstance().sendEvent(Event.PACKAGE_ADDED);
 				hide();
 			};
 		});
@@ -126,6 +152,21 @@ public class AddPropertyPackageDialog extends SDialog {
 	}
 
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void show(SComponent c) {
+		initialize();
+		super.show(c);
+	}
+
+
+	/**
+	 * Helper method to display error message
+	 * 
+	 * @param message the actual message
+	 */
 	private void showError(String message) {
 		SOptionPane.showMessageDialog(this, message, "Error", SOptionPane.ERROR_MESSAGE);
 	}

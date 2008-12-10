@@ -32,12 +32,14 @@ import org.wings.SButton;
 import org.wings.SConstants;
 import org.wings.SDimension;
 import org.wings.SGridLayout;
+import org.wings.SOptionPane;
 import org.wings.SPanel;
 import org.wings.SScrollPane;
 import org.wings.STree;
 import org.wings.border.SLineBorder;
 import org.wings.tree.SDefaultTreeCellRenderer;
 
+import com.commsen.apropos.core.PropertiesException;
 import com.commsen.apropos.core.PropertiesManager;
 import com.commsen.apropos.core.PropertyPackage;
 import com.commsen.apropos.web.dialog.AddPropertyPackageDialog;
@@ -116,10 +118,28 @@ public class PropertyPackagesNavigator extends SPanel {
 			}
 		});
 
-		SButton deleteButton = new SButton("Delete");
+		final SButton deleteButton = new SButton("Delete");
 		deleteButton.setPreferredSize(SDimension.FULLAREA);
 		result.add(deleteButton);
 
+		deleteButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SOptionPane.showQuestionDialog(deleteButton, "Going to delete properties package " + AproposSession.getCurrentPropertyPackage() + "! Are you sure?", "Deleting selected package",
+				        new ActionListener() {
+					        public void actionPerformed(ActionEvent event) {
+						        if (event.getActionCommand().equals(SOptionPane.OK_ACTION)) {
+							        try {
+								        PropertiesManager.deletePropertyPackage(AproposSession.getCurrentPropertyPackage().getName());
+								        AproposSession.setCurrentPropertyPackage(null);
+								        EventManager.getInstance().sendEvent(Event.PACKAGE_DELETED);
+							        } catch (PropertiesException e) {
+								        SOptionPane.showMessageDialog(deleteButton, e.getMessage(), "Error", SOptionPane.ERROR_MESSAGE);
+							        }
+						        }
+					        }
+				        });
+			}
+		});
 		return result;
 	}
 
