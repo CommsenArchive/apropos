@@ -44,27 +44,39 @@ import com.commsen.apropos.core.PropertiesManager;
 import com.commsen.apropos.core.PropertyPackage;
 import com.commsen.apropos.web.dialog.AddPropertyPackageDialog;
 import com.commsen.apropos.web.event.Event;
+import com.commsen.apropos.web.event.EventListener;
 import com.commsen.apropos.web.event.EventManager;
 
 /**
  * @author Milen Dyankov
  * 
  */
-public class PropertyPackagesNavigator extends SPanel {
+public class PropertyPackagesNavigator extends SPanel implements EventListener {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private PropertiesNavigationTreeModel treeModel = new PropertiesNavigationTreeModel();
+
+	final STree tree = new STree(treeModel);
+
 
 	/**
 	 * 
 	 */
 	public PropertyPackagesNavigator() {
-		super(new SBorderLayout());
+		super();
+		buildPanel();
+		EventManager.getInstance().addListener(Event.PACKAGE_ADDED, this);
+		EventManager.getInstance().addListener(Event.PACKAGE_DELETED, this);
 
-		final STree tree = new STree(new PropertiesNavigationTreeModel());
+	}
+
+
+	private void buildPanel() {
+		setLayout(new SBorderLayout());
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setVerticalAlignment(SConstants.TOP_ALIGN);
 		tree.setRootVisible(false);
@@ -73,7 +85,8 @@ public class PropertyPackagesNavigator extends SPanel {
 		cellRenderer.setOpenIcon(cellRenderer.getLeafIcon());
 		cellRenderer.setClosedIcon(cellRenderer.getLeafIcon());
 
-		expandAllTreeNodes(tree);
+		expandAllTreeNodes();
+
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
@@ -124,13 +137,14 @@ public class PropertyPackagesNavigator extends SPanel {
 
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SOptionPane.showQuestionDialog(deleteButton, "Going to delete properties package " + AproposSession.getCurrentPropertyPackage() + "! Are you sure?", "Deleting selected package",
-				        new ActionListener() {
+				SOptionPane.showQuestionDialog(deleteButton, "Going to delete properties package " + AproposSession.getCurrentPropertyPackage().getName() + "! Are you sure?",
+				        "Deleting selected package", new ActionListener() {
 					        public void actionPerformed(ActionEvent event) {
 						        if (event.getActionCommand().equals(SOptionPane.OK_ACTION)) {
 							        try {
-								        PropertiesManager.deletePropertyPackage(AproposSession.getCurrentPropertyPackage().getName());
-								        AproposSession.setCurrentPropertyPackage(null);
+								        PropertyPackage currentPackage = AproposSession.getCurrentPropertyPackage();
+								        PropertiesManager.deletePropertyPackage(currentPackage.getName());
+								        AproposSession.setCurrentPropertyPackage(currentPackage.getParent());
 								        EventManager.getInstance().sendEvent(Event.PACKAGE_DELETED);
 							        } catch (PropertiesException e) {
 								        SOptionPane.showMessageDialog(deleteButton, e.getMessage(), "Error", SOptionPane.ERROR_MESSAGE);
@@ -144,15 +158,28 @@ public class PropertyPackagesNavigator extends SPanel {
 	}
 
 
-	public final void expandAllTreeNodes(STree tree) {
+	public final void expandAllTreeNodes() {
 		for (int i = 0; i < tree.getRowCount(); ++i) {
 			tree.expandRow(i);
+			PropertyPackage currentPackage = AproposSession.getCurrentPropertyPackage();
+			if (currentPackage != null) {
+				String useObject = (String) ((DefaultMutableTreeNode) tree.getPathForRow(i).getLastPathComponent()).getUserObject();
+				if (currentPackage.getName().equals(useObject)) {
+					tree.setSelectionRow(i);
+				}
+			}
 		}
 	}
-	//
-	// class PropertyPackageSelection implements ActionListener {
-	// public void actionPerformed(ActionEvent e) {
-	// }
-	// }
+
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.commsen.apropos.web.event.EventListener#handleEvent(com.commsen.apropos.web.event.Event)
+	 */
+	public void handleEvent(Event event) {
+		treeModel.updateTree();
+		expandAllTreeNodes();
+	}
 
 }

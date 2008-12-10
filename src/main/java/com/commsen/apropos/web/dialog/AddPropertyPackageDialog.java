@@ -137,6 +137,8 @@ public class AddPropertyPackageDialog extends SDialog {
 					return;
 				}
 
+				AproposSession.setCurrentPropertyPackage(propertyPackage);
+
 				EventManager.getInstance().sendEvent(Event.PACKAGE_ADDED);
 				hide();
 			};

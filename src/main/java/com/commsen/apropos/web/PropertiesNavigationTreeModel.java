@@ -26,15 +26,12 @@ import javax.swing.tree.TreeNode;
 
 import com.commsen.apropos.core.PropertiesManager;
 import com.commsen.apropos.core.PropertyPackage;
-import com.commsen.apropos.web.event.Event;
-import com.commsen.apropos.web.event.EventListener;
-import com.commsen.apropos.web.event.EventManager;
 
 /**
  * @author Milen Dyankov
  * 
  */
-public class PropertiesNavigationTreeModel extends DefaultTreeModel implements EventListener {
+public class PropertiesNavigationTreeModel extends DefaultTreeModel {
 
 	/**
 	 * 
@@ -47,8 +44,6 @@ public class PropertiesNavigationTreeModel extends DefaultTreeModel implements E
 	 */
 	public PropertiesNavigationTreeModel() {
 		super(buildNodes());
-		EventManager.getInstance().addListener(Event.PACKAGE_ADDED, this);
-		EventManager.getInstance().addListener(Event.PACKAGE_DELETED, this);
 	}
 
 
@@ -80,9 +75,8 @@ public class PropertiesNavigationTreeModel extends DefaultTreeModel implements E
 	 * 
 	 * @see com.commsen.apropos.web.event.EventListener#handleEvent(com.commsen.apropos.web.event.Event)
 	 */
-	public void handleEvent(Event event) {
+	public void updateTree() {
 		setRoot(buildNodes());
-
 	}
 
 }
