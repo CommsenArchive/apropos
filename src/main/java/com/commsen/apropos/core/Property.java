@@ -21,25 +21,55 @@ package com.commsen.apropos.core;
 import org.apache.commons.lang.StringUtils;
 
 /**
+ * This class represents property. In APropOS a property is a very simple object having name, value,
+ * description and group it belongs to.
+ * 
  * @author Milen Dyankov
  * 
  */
 public class Property implements Cloneable {
 
+	/**
+	 * the name
+	 */
 	private String name;
 
+	/**
+	 * the value
+	 */
 	private String value;
 
+	/**
+	 * the description
+	 */
 	private String description;
 
+	/**
+	 * the group this property belongs to
+	 */
 	private String group;
 
 
+	/**
+	 * Creates new property with given <code>name</code>
+	 * 
+	 * @param name the name of the property
+	 * @throws PropertiesException if <code>name</code> is <code>null</code> or blank
+	 */
 	public Property(String name) throws PropertiesException {
 		this(name, null, null, null);
 	}
 
 
+	/**
+	 * Creates new property object and sets all fields with appropriate values
+	 * 
+	 * @param name the property name
+	 * @param value the property value
+	 * @param description the property description
+	 * @param group the group this property belongs to
+	 * @throws PropertiesException if <code>name</code> is <code>null</code> or blank
+	 */
 	public Property(String name, String value, String description, String group) throws PropertiesException {
 		setName(name);
 		setValue(value);
@@ -48,6 +78,15 @@ public class Property implements Cloneable {
 	}
 
 
+	/**
+	 * Checks if given <code>property</code> is the same as the one represented by this object.
+	 * This method will return <code>true</code> if ALL fields have exactly the same values and
+	 * <code>false</code> otherwise
+	 * 
+	 * @param property the property to compare
+	 * @return <code>true</code> if both object have exactly the same values in all fields and
+	 *         <code>false</code> otherwise
+	 */
 	public boolean sameAs(Property property) {
 		return StringUtils.equals(group, property.getGroup()) && StringUtils.equals(name, property.getName()) && StringUtils.equals(value, property.getValue())
 		        && StringUtils.equals(description, property.getDescription());
@@ -55,7 +94,7 @@ public class Property implements Cloneable {
 
 
 	/**
-	 * @see java.lang.Object#clone()
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Object clone() throws CloneNotSupportedException {
@@ -63,8 +102,8 @@ public class Property implements Cloneable {
 	}
 
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Returns true if <code>obj.name.equals(name)</code>
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -75,8 +114,9 @@ public class Property implements Cloneable {
 	}
 
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Returns hashCode based on {@link #name} to conform to modified {@link #equals(Object)}
+	 * method.
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -97,8 +137,8 @@ public class Property implements Cloneable {
 
 
 	/**
-	 * @param name the name to set
-	 * @throws PropertiesException
+	 * @param name the name of the property
+	 * @throws PropertiesException if <code>name</code> is <code>null</code> or blank
 	 */
 	public void setName(String name) throws PropertiesException {
 		if (StringUtils.isBlank(name)) throw new PropertiesException("Can not create property without name!");
