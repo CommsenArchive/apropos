@@ -1,0 +1,12 @@
+/* some custom css goes here */
+
+dl, dl * {
+	background-color: transparent;
+  	padding: 0px;
+  	border: 0px none;
+}
+
+dl.changelog ul {
+	margin: 0px;
+	padding: 0px;
+}

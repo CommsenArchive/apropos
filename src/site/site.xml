@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="APropOS">
+
+
+	<bannerLeft>
+		<name>APropOS</name>
+	</bannerLeft>
+
+	<bannerRight>
+		<name>Commsen International</name>
+		<src>
+			img/commsen-logo.png
+		</src>
+		<href>http://commsen.com</href>
+	</bannerRight>
+
+	<body>
+
+		<links>
+			<item
+				name="project page at SourceForge.net"
+				href="http://www.sourceforge.net/projects/apropos" />
+			<item
+				name="other projects"
+				href="http://commsen.com/en/projects" />
+		</links>
+
+		<!-- 
+			<menu name="Stopwatch">
+			<item name="Quick start" href="quickStart.html"/>
+			<item name="Changelog" href="changelog.html"/>
+			<item name="Download" href="download.html"/>
+			</menu>
+			
+			<menu name="Documentation">
+			<item name="Usage" href="doc/usage.html"/>
+			<item name="Configuration" href="doc/config.html"/>
+			<item name="FAQ" href="faq.html"/>
+			</menu>
+		-->
+
+		${reports}
+
+
+	</body>
+
+	<poweredBy>
+		<logo
+			name="Maven"
+			href="http://maven.apache.org/"
+			img="http://maven.apache.org/images/logos/maven-feather.png" />
+		<logo
+			name="SourceForge"
+			href="http://www.sourceforge.net"
+			img="http://sflogo.sourceforge.net/sflogo.php?group_id=247394&amp;type=2" />
+		<logo
+			name="WingS"
+			href="http://wingsframework.org"
+			img="img/wings-logo.png" />
+	</poweredBy>
+
+
+	<search />
+
+</project>

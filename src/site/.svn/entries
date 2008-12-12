@@ -1,0 +1,52 @@
+8
+
+dir
+121
+https://jstopwatch.svn.sourceforge.net/svnroot/jstopwatch/stopwatch/trunk/src/site
+https://jstopwatch.svn.sourceforge.net/svnroot/jstopwatch
+
+
+
+2006-07-21T06:26:53.698130Z
+84
+azzazzel
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+3ce43082-7c0e-0410-ab9c-817f819c3da9
+
+apt
+dir
+
+fml
+dir
+
+resources
+dir
+
+site.xml
+file
+
+
+
+
+2007-07-22T09:46:18.000000Z
+4c20833dba41436defc8292f0444d9b8
+2006-07-13T13:46:28.846268Z
+76
+azzazzel
+
+xdoc
+dir
+

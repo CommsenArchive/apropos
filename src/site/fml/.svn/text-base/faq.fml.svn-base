@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<faqs id="General FAQ">
+	
+	<part id="General">
+
+    	<faq id="question1">
+			<question>How is Stopwatch different from JAMon?</question>
+			<answer>
+				<ul>
+					<li>it is able to persists its data. By default it uses in-memory HSQL database but any other JDBC compliant database can be used.</li>
+					<li>it is modular. It can use custom engines and storages so different things can be measured (memory, load, etc).</li>
+					<li>it is Static. The only class one ever use is the static Stopwatch. There is no new object instance for each measurement.</li>
+					<li>it has JMX management interface to remotely start and stop Stopwatch as well as obtain reports. </li>
+				</ul>
+			</answer>
+		</faq>
+
+    	<faq id="question2">
+			<question>Is Stopwatch thread safe?</question>
+			<answer>
+				The short answer is "Yes". The longer and more correct answer is "It depends". Stopwatch consist of single 
+				static class (com.commsen.stopwatch.Stopwatch) which methods are not synchronized and simply forward calls to 
+				the currently used engine.  It is up to the engine to decide whether method invocations are synchronized. 
+				Currently all engines provided by default with Stopwatch synchronize calls.
+			</answer>
+		</faq>
+		
+    	<faq id="question3">
+			<question>Why measuring "nothing" does not report 0ms?</question>
+			<answer>
+				
+				Executing this code:
+
+				<source>
+for (int i = 0; i &lt; 1000; i++) {
+	long id = Stopwatch.start("g", "l");
+	Stopwatch.stop(id);
+}
+Report report = Stopwatch.getSingleReport("g", "l");
+System.out.print(report);
+				</source>
+				
+				one map expect to see:
+				
+				<pre>
+Group="g"  Label="l"  Count=1000  Min=0.0  Avg=0.0  Max=0.0  Total=0.0
+				</pre>
+
+				but instead the output will be somethimg similar to:
+				
+				<pre>
+Group="g"  Label="l"  Count=1000  Min=0.0  Avg=0.0  Max=1.0  Total=8.0
+				</pre>
+				
+				The reason is that running Stopwatch itself takes some milliseconds. An efforts have been made to 
+				minimize this overhead (on my machine it's ~0.8%) since it can not be completely eliminated.
+
+			</answer>
+		</faq>
+		
+		
+	</part>
+	
+</faqs>

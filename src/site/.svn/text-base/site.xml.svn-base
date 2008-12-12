@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Maven">
+  <bannerLeft>
+    <name>Stopwatch</name>
+<!--    
+    <src>http://maven.apache.org/images/apache-maven-project.png</src>
+    <href>http://maven.apache.org/</href>
+-->    
+  </bannerLeft>
+<!--  
+  <bannerRight>
+    <src>http://maven.apache.org/images/maven-small.gif</src>
+  </bannerRight>
+-->
+    <bannerRight>
+    	<name>Hosted by SourceForge</name>
+	    <src>http://sflogo.sourceforge.net/sflogo.php?group_id=160328&amp;type=1</src>
+    	<href>http://www.sourceforge.net</href>
+  	</bannerRight>
+
+  <body>
+  
+    <links>
+      <item name="project page at SourceForge.net" href="http://www.sourceforge.net/projects/jstopwatch" />
+    </links>
+    
+    <menu name="Stopwatch">
+		<item name="Quick start" href="quickStart.html"/>
+		<item name="Changelog" href="changelog.html"/>
+		<item name="Download" href="download.html"/>
+    </menu>
+
+    <menu name="Documentation">
+      	<item name="Usage" href="doc/usage.html"/>
+      	<item name="Configuration" href="doc/config.html"/>
+		<item name="FAQ" href="faq.html"/>
+   	</menu>
+    
+    
+    ${reports}
+	
+    
+  </body>
+  
+  <search/>
+  
+</project>

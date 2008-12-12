@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<document>
+
+	<properties>
+		<title>Welcome to Stopwatch</title>
+		<author email="milendyankov@gmail.com">Milen Dyankov</author>
+	</properties>
+	
+	<body>
+		<section name="Welcome to Stopwatch">
+			<p>
+				Stopwatch was ment to replace <code>System.currentTimeMillis()</code>
+				calls, match like Log4j replaced <code>System.out.println()</code>
+				calls. To see how it does that go to 
+				<a href="quickStart.html" >Quick Start</a> page.
+			</p>
+
+		</section>
+		
+		<section name="Why Stopwatch">
+			<p> Stopwatch was inspired by ATG's performance monitor tool and to be honest, it 
+				wouldn't probably never exists if I have discovered 
+				<a href="http://www.javaperformancetuning.com/tools/jamon/index.shtml" >JAMon</a> earlier. 
+				But I didn't and I couldn't also find any good, open source, performance measurement API, that was able to measure 
+				performance of any given piece of java code. So I started writing Stopwatch. Then I thought it may be useful for 
+				other people as well and so I decided to make it public. 
+				<a href="http://www.SourceForge.net" >SourceForge</a> just seemed the right place for it.   
+			</p>
+			<p>
+				Please keep in mind that Stopwatch is relatively simple piece of software I develop in
+				my spare time (which I don't have a lot). If it happens to be of any use for you, please send some feedback. 
+				I will highly appreciate it!
+			</p>
+		</section>
+		
+	</body>
+</document>
+

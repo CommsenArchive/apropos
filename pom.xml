@@ -1,12 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.commsen</groupId>
 	<artifactId>apropos</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>apropos Maven Webapp</name>
-	<url>http://maven.apache.org</url>
+	<name>APropOS</name>
+	<url>http://apropos.sourceforge.net/</url>
+	<inceptionYear>2008</inceptionYear>
+
+	<description>
+		Application Properties Organized and Stored in central location.
+		That's main purpose of APropOS. This simple web application
+		allows developers to put their application/build/i18n/...
+		properties in a single place and access them from wherever they
+		like.
+	</description>
+
+	<organization>
+		<name>Commsen International</name>
+		<url>http://commsen.com</url>
+	</organization>
+
+	<scm>
+		<url>http://github.com/azzazzel/apropos/tree/master</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>mdyankov</id>
+			<name>Milen Dyankov</name>
+			<email>milendyankov@gmail.com</email>
+			<timezone>+2</timezone>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<distribution>manual</distribution>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+		</license>
+	</licenses>
+
 	<dependencies>
 		<dependency>
 			<groupId>wings</groupId>
@@ -45,12 +85,13 @@
 			<version>2.4</version>
 			<scope>provided</scope>
 		</dependency>
-	  <dependency>
-      <groupId>com.thoughtworks.xstream</groupId>
-      <artifactId>xstream</artifactId>
-      <version>1.2.2</version>
-    </dependency>
-  </dependencies>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<finalName>apropos</finalName>
 		<plugins>
@@ -63,4 +104,42 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>surefire-report-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>taglist-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<format>xml</format>
+					<linkXref>true</linkXref>
+					<sourceEncoding>utf-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>1.5</targetJdk>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jxr-maven-plugin</artifactId>
+			</plugin>
+
+		</plugins>
+	</reporting>
+
 </project>

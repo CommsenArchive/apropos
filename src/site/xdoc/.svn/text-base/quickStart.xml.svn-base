@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<document>
+
+	<properties>
+		<title>Welcome to Stopwatch</title>
+		<author email="milendyankov@gmail.com">Milen Dyankov</author>
+	</properties>
+	
+	<body>
+		<section name="Quick start">
+			<p>Let's examine the following code:</p>
+			
+			<div class="source"><code><pre>
+long start = System.currentTimeMillis();
+// some code to be measured
+long stop = System.currentTimeMillis();
+System.out.print(stop - start);
+			</pre></code></div>
+			
+			<p>
+				This is the usual way to measure how long it takes to execute a piece of code and it works just fine. 
+				But what if the code is executed may times. One would probably like to know how many times it was executed, 
+				what was the average time as well as minimum and maximum time taken to execute this code. 
+			</p>
+			<p>	
+				Is such case one can write some code to calculates all that (it is not that hard, after all) or simply use Stopwatch:
+			</p>
+		
+			<div class="source"><code><pre>
+Stopwatch.setActive(true);			
+for (int count = 0; count &lt; 21; count++) { 
+	long id = Stopwatch.start("my group", "my label");
+	// some code to be measured
+	Stopwatch.stop(id);
+}
+
+Report report = Stopwatch.getSingleReport("my group", "my label");
+System.out.print(report);
+			</pre></code></div>
+			
+			<p>	
+				This will print sometning similar to :
+			</p>
+
+			<div class="source"><code><pre>
+Group="my group"  Label="my label"  Count=21  Min=12  Avg=13  Max=32  Total=274
+			</pre></code></div>
+
+			<p>	
+				Another issue Stopwatch can resolve is ignoring "failed" executions. 
+				Let's say the performance of some code that can throw an exception is to be measured. 
+				If we are going to measure every single run and say half of them ends up with an exception thrown,
+				the result can be very optimistic but most likely incorrect.
+				So we only want to measure the "successful" executions and ignore the rest
+			</p>
+			
+			<div class="source"><code><pre>
+Stopwatch.setActive(true);
+for (int count = 0; count &lt; 21; count++) { 
+	long id = Stopwatch.start("my group", "my label");
+	try {
+		if (count % 5 == 0) throw new Exception();
+		// some code to be measured
+	} catch (Exception e) {
+		Stopwatch.skip(id);
+	} finally {
+		Stopwatch.stop(id);
+	}
+}
+Report report = Stopwatch.getSingleReport("my group", "my label");
+System.out.print(report);
+			</pre></code></div>
+			
+			<p>	
+				This will print sometning similar to :
+			</p>
+
+			<div class="source"><code><pre>
+Group="my group"  Label="my label"  Count=16  Min=11  Avg=12  Max=14  Total=194
+			</pre></code></div>
+
+			<p>	
+				Note that <code> Count=16 </code>. Four measurments (count in 5,10,15,20) were skipped.
+			</p>
+
+		</section>
+	</body>
+</document>
+

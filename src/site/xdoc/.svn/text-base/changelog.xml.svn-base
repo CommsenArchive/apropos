@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<document>
+
+	<properties>
+		<title>Welcome to Stopwatch</title>
+		<author email="milendyankov@gmail.com">Milen Dyankov</author>
+	</properties>
+	
+	<body>
+		<section name="Changelog">
+			<dl class="changelog">
+				<dt>version 0.3</dt>
+				<dd>
+					<dl>
+						<dt>Core</dt>
+						<dd>
+							<ul>
+								<li>Added new methods generating load reports. LoadStopwatchEngine is now deprecated!</li>
+								<li>Persistence code moved into new StorageManager</li>
+								<li>Added persistence modes : NORMAL, THREAD, DELAYED</li>
+								<li>Minor big fixes and performance improvement</li>
+							</ul>
+						</dd>
+						
+						<dt>Management interface (JMX)</dt>
+						<dd>
+							<ul>
+								<li>Added new method for load reports.</li>
+								<li>Fixed formatting in getReportsAsString method</li>
+								<li>Implemented getReportsAsXML method</li>
+							</ul>
+						</dd>
+						
+						<dt>Tests</dt>
+						<dd>
+							<ul>
+								<li>added new tests for the new persistence modes</li>
+							</ul>
+						</dd>
+					</dl>
+				</dd>
+				
+				<dt>version 0.2</dt>
+				<dd>
+					The first publicly available version of Stopwatch.
+				</dd>
+			</dl>
+			
+		</section>
+	</body>
+</document>

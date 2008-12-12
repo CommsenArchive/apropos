@@ -1,0 +1,55 @@
+8
+
+dir
+121
+https://jstopwatch.svn.sourceforge.net/svnroot/jstopwatch/stopwatch/trunk/src/site/apt
+https://jstopwatch.svn.sourceforge.net/svnroot/jstopwatch
+
+
+
+2006-07-21T06:25:45.135113Z
+82
+azzazzel
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+3ce43082-7c0e-0410-ab9c-817f819c3da9
+
+doc
+dir
+
+download.apt
+file
+
+
+
+
+2007-07-22T09:46:18.000000Z
+81db3a9ebbb9ddab19c5c5055d901551
+2006-03-31T11:09:51.981240Z
+33
+azzazzel
+
+format.apt
+file
+
+
+
+
+2007-07-22T09:46:18.000000Z
+71ed7459f4e604fcb66ee51a6badeff2
+2006-03-09T12:59:13.700789Z
+15
+azzazzel
+

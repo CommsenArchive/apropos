@@ -1,0 +1,26 @@
+	------
+	Stopwatch documentation
+	------
+	Milen Dyankov
+	------
+	
+
+Download the current release
+~~~~~~~~~~~~~~~~~~~~~~~	
+	
+	The current release can be downloaded at {{{http://sourceforge.net/project/showfiles.php?group_id=160328}SourceForge}}
+
+
+Check out source code from SVN
+~~~~~~~~~~~~~~~~~~~~~~~	
+	
+	The source can be checked out anonymously from SVN with this command:
+	
++--------------------------------------------------------------------------------------+
+$ svn checkout http://svn.sourceforge.net/svnroot/jstopwatch/stopwatch/trunk stopwatch
++--------------------------------------------------------------------------------------+
+
+	The following is a link to the online source repository:
+	{{{http://svn.sourceforge.net/viewcvs.cgi/jstopwatch/}http://svn.sourceforge.net/viewcvs.cgi/jstopwatch/}}
+
+
