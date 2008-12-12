@@ -24,28 +24,33 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 import org.wings.SBorderLayout;
-import org.wings.SBoxLayout;
 import org.wings.SButton;
 import org.wings.SCheckBox;
 import org.wings.SComboBox;
-import org.wings.SDialog;
+import org.wings.SConstants;
+import org.wings.SDimension;
 import org.wings.SFileChooser;
-import org.wings.SForm;
-import org.wings.SLabel;
+import org.wings.SGridLayout;
 import org.wings.SOptionPane;
 import org.wings.SPanel;
 
 import com.commsen.apropos.web.AproposSession;
+import com.commsen.apropos.wings.AproposGridLaoyut;
 
 /**
  * @author Milen Dyankov
  * 
  */
-public class ImportPropertiesDialog extends SDialog {
+public class ImportPropertiesDialog extends AproposBaseDialog {
 
-	private SFileChooser fileChooser = new SFileChooser();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	private SForm panel = new SForm();
+	private final SFileChooser fileChooser = new SFileChooser();
+	private final SComboBox fileTypeSelector = new SComboBox();
+	private final SCheckBox overwriteCheckbox = new SCheckBox("Overwrite existing properties");
 
 
 	/**
@@ -54,9 +59,8 @@ public class ImportPropertiesDialog extends SDialog {
 	public ImportPropertiesDialog() {
 		setModal(true);
 		setDraggable(true);
-		setTitle("Import properties");
+		setTitle("Import properties into current package");
 		setLayout(new SBorderLayout());
-		add(panel);
 		prepareComponents();
 	}
 
@@ -65,36 +69,47 @@ public class ImportPropertiesDialog extends SDialog {
 	 * 
 	 */
 	public void prepareComponents() {
-		add(fileChooser, SBorderLayout.NORTH);
 
-		SPanel optionsPanel = new SPanel(new SBoxLayout(SBorderLayout.VERTICAL));
-		add(optionsPanel);
+		AproposGridLaoyut centerPanelLaoyout = new AproposGridLaoyut(2);
+		centerPanelLaoyout.setHgap(2);
+		centerPanelLaoyout.setVgap(2);
+		SPanel center = new SPanel(centerPanelLaoyout);
+		add(center, SBorderLayout.CENTER);
 
-		final SCheckBox overwriteCheckbox = new SCheckBox("Overwrite existing properties");
-		optionsPanel.add(overwriteCheckbox);
+		prepareRow(center, "file", fileChooser);
+		prepareRow(center, "type", fileTypeSelector);
+		prepareRow(center, null, overwriteCheckbox);
 
-		SPanel p = new SPanel(new SBoxLayout(SBoxLayout.HORIZONTAL));
-		p.add(new SLabel("File type: "));
+		fileChooser.setPreferredSize(SDimension.FULLWIDTH);
 
-		final SComboBox fileType = new SComboBox();
-		fileType.addItem("properties");
-		fileType.addItem("XML");
-		p.add(fileType);
+		fileTypeSelector.addItem("properties");
+		fileTypeSelector.addItem("XML");
+		getSession().getRootFrame().setFocus(fileChooser);
 
-		optionsPanel.add(p);
-
-		p = new SPanel(new SBoxLayout(SBoxLayout.HORIZONTAL));
+		SPanel bottom = new SPanel();
+		SGridLayout bottomPanelLayout = new SGridLayout(1, 2, 10, 10);
+		bottomPanelLayout.setColumns(2);
+		bottom.setLayout(bottomPanelLayout);
+		bottom.setPreferredSize(new SDimension("200", "*"));
+		bottom.setHorizontalAlignment(SConstants.RIGHT);
+		add(bottom, SBorderLayout.SOUTH);
 
 		SButton submitButton = new SButton("Upload");
+		submitButton.setPreferredSize(SDimension.FULLWIDTH);
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				try {
 					if (fileChooser.getSelectedFile() != null) {
 						Properties properties = new Properties();
-						if (fileType.getSelectedItem().equals("properties")) {
-							properties.load(new FileInputStream(fileChooser.getSelectedFile()));
-						} else if (fileType.getSelectedItem().equals("XML")) {
-							properties.loadFromXML(new FileInputStream(fileChooser.getSelectedFile()));
+						FileInputStream propertiesFileStream = new FileInputStream(fileChooser.getSelectedFile());
+						try {
+							if (fileTypeSelector.getSelectedItem().equals("properties")) {
+								properties.load(propertiesFileStream);
+							} else if (fileTypeSelector.getSelectedItem().equals("XML")) {
+								properties.loadFromXML(propertiesFileStream);
+							}
+						} finally {
+							propertiesFileStream.close();
 						}
 						AproposSession.importProperties(properties, overwriteCheckbox.isSelected());
 						hide();
@@ -106,17 +121,16 @@ public class ImportPropertiesDialog extends SDialog {
 				}
 			}
 		});
-		p.add(submitButton);
+		bottom.add(submitButton);
 
 		SButton closeButton = new SButton("Close");
+		closeButton.setPreferredSize(SDimension.FULLWIDTH);
 		closeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				hide();
 			}
 		});
-		p.add(closeButton);
-
-		add(p, SBorderLayout.SOUTH);
+		bottom.add(closeButton);
 
 	}
 }

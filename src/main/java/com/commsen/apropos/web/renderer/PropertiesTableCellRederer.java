@@ -18,8 +18,6 @@
  */
 package com.commsen.apropos.web.renderer;
 
-import java.awt.Color;
-
 import org.wings.SComponent;
 import org.wings.STable;
 import org.wings.table.SDefaultTableCellRenderer;
@@ -46,17 +44,40 @@ public class PropertiesTableCellRederer extends SDefaultTableCellRenderer {
 	 */
 	@Override
 	public SComponent getTableCellRendererComponent(STable table, Object value, boolean selected, int row, int col) {
+
+		switch (col) {
+			case 0:
+				setStyle("propertyGroup");
+				break;
+			case 1:
+				setStyle("propertyName");
+				break;
+			case 2:
+				setStyle("propertyValue");
+				decorate(table, row);
+				break;
+			case 3:
+				setStyle("propertyDescription");
+				break;
+
+			default:
+		}
+
+		return super.getTableCellRendererComponent(table, value, selected, row, col);
+	}
+
+
+	/**
+	 * @param row
+	 * @param p
+	 */
+	private void decorate(STable table, int row) {
 		PropertyTableModel p = (PropertyTableModel) table.getModel();
 		if (p.isParentProperty(row)) {
-			setForeground(Color.LIGHT_GRAY);
-		} else {
-			if (p.isSameAsParent(row)) {
-				setForeground(Color.RED);
-			} else {
-				setForeground(Color.BLACK);
-			}
+			addStyle("parentProperty");
+		} else if (p.isSameAsParent(row)) {
+			addStyle("sameAsParentProperty");
 		}
-		return super.getTableCellRendererComponent(table, value, selected, row, col);
 	}
 
 }

@@ -23,12 +23,13 @@ import java.awt.event.ActionListener;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.wings.SBorderLayout;
 import org.wings.SButton;
 import org.wings.SComboBox;
 import org.wings.SComponent;
-import org.wings.SDialog;
+import org.wings.SConstants;
+import org.wings.SDimension;
 import org.wings.SGridLayout;
-import org.wings.SLabel;
 import org.wings.SOptionPane;
 import org.wings.SPanel;
 import org.wings.STextArea;
@@ -40,6 +41,7 @@ import com.commsen.apropos.core.PropertyPackage;
 import com.commsen.apropos.web.AproposSession;
 import com.commsen.apropos.web.event.Event;
 import com.commsen.apropos.web.event.EventManager;
+import com.commsen.apropos.wings.AproposGridLaoyut;
 
 /**
  * This class represents a dialog window used to add new properties package.
@@ -47,7 +49,7 @@ import com.commsen.apropos.web.event.EventManager;
  * @author Milen Dyankov
  * 
  */
-public class AddPropertyPackageDialog extends SDialog {
+public class AddPropertyPackageDialog extends AproposBaseDialog {
 
 	/**
 	 * 
@@ -81,7 +83,8 @@ public class AddPropertyPackageDialog extends SDialog {
 			for (String name : PropertiesManager.getPropertyPackagesNames()) {
 				parentField.addItem(name);
 			}
-			parentField.setSelectedItem(AproposSession.getCurrentPropertyPackage().getName());
+			PropertyPackage currePackage = AproposSession.getCurrentPropertyPackage();
+			parentField.setSelectedItem(currePackage == null ? null : currePackage.getName());
 		}
 	}
 
@@ -92,26 +95,40 @@ public class AddPropertyPackageDialog extends SDialog {
 	public AddPropertyPackageDialog() {
 		setModal(true);
 		setDraggable(true);
-		setTitle("Create properties set");
-		SPanel panel = new SPanel(new SGridLayout(2));
+		setTitle("Create new properties package");
+		setLayout(new SBorderLayout(10, 10));
 
-		panel.add(new SLabel("name"));
-		panel.add(nameField);
+		AproposGridLaoyut centerPanelLaoyout = new AproposGridLaoyut(2);
+		centerPanelLaoyout.setHgap(2);
+		centerPanelLaoyout.setVgap(2);
+		SPanel panel = new SPanel(centerPanelLaoyout);
+		add(panel, SBorderLayout.CENTER);
 
-		panel.add(new SLabel("description"));
-		panel.add(descriptionField);
+		prepareRow(panel, "name", nameField);
+		prepareRow(panel, "description", descriptionField);
+		prepareRow(panel, "parent", parentField);
 
-		panel.add(new SLabel("parent"));
-		panel.add(parentField);
+		getSession().getRootFrame().setFocus(nameField);
 
-		SButton cancelButton = new SButton("cancel");
+		SPanel bottom = new SPanel();
+		SGridLayout bottomPanelLayout = new SGridLayout(1, 2, 10, 10);
+		bottomPanelLayout.setColumns(2);
+		bottom.setLayout(bottomPanelLayout);
+		bottom.setPreferredSize(new SDimension("200", "*"));
+		bottom.setHorizontalAlignment(SConstants.RIGHT);
+		add(bottom, SBorderLayout.SOUTH);
+
+		SButton cancelButton = new SButton("Cancel");
+		cancelButton.setPreferredSize(SDimension.FULLWIDTH);
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				hide();
 			};
 		});
+		bottom.add(cancelButton);
 
 		SButton okButton = new SButton("OK");
+		okButton.setPreferredSize(SDimension.FULLWIDTH);
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -122,9 +139,10 @@ public class AddPropertyPackageDialog extends SDialog {
 
 				PropertyPackage parent = null;
 				if (parentField.getSelectedItem() != null) {
-					parent = PropertiesManager.getPropertyPackage((String) parentField.getSelectedItem());
+					String parentName = (String) parentField.getSelectedItem();
+					parent = PropertiesManager.getPropertyPackage(parentName);
 					if (parent == null) {
-						showError("Can not find parent " + parent);
+						showError("Can not find parent " + parentName);
 						return;
 					}
 				}
@@ -144,12 +162,7 @@ public class AddPropertyPackageDialog extends SDialog {
 			};
 		});
 
-		panel.add(cancelButton);
-		panel.add(okButton);
-
-		add(panel);
-
-		getSession().getRootFrame().setFocus(nameField);
+		bottom.add(okButton);
 
 	}
 

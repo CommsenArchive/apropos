@@ -1,0 +1,55 @@
+
+.dialogLabel {
+	background-color: #AABBCC;
+	color: white;
+	font-weight: bold;
+	text-align: right;
+	width: 150px;
+	height: 20px;
+	padding: 0px 5px;
+}
+
+INPUT.dialogField,  SELECT.dialogField, TEXTAREA.dialogField {
+	border: 1px solid gray;
+	width: 300px;
+	color: gray;
+	font-family: monospace;
+	font-size: 9pt;
+	padding: 0px 5px;
+}
+
+SELECT.dialogField {
+	padding: 0px;
+}
+
+INPUT.dialogField {
+	height: 20px;
+}
+
+TEXTAREA.dialogField {
+	height: 60px;
+}
+
+.propertyGroup,.propertyDescription {
+	color: gray;
+	font-style: italic;
+	font-size: 0.85em
+}
+
+.propertyName {
+	color: #555555;
+	text-align: right;
+	width: 100%;
+}
+
+.propertyValue {
+	
+}
+
+.parentProperty {
+	color: silver;
+}
+
+.sameAsParentProperty {
+	color: maroon;
+}

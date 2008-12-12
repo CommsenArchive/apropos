@@ -62,7 +62,7 @@ public class PropertyTableModel extends XTableModel implements EventListener {
 	 * @param propertyPackagePanel
 	 */
 	public PropertyTableModel() {
-		PropertyPackage propertyPackage = AproposSession.getCurrentPropertyPackage();
+		// PropertyPackage propertyPackage = AproposSession.getCurrentPropertyPackage();
 		EventManager.getInstance().addListener(Event.PROPERTY_ADDED, this);
 		EventManager.getInstance().addListener(Event.PROPERTY_DELETED, this);
 		EventManager.getInstance().addListener(Event.PROPERTY_UPDATED, this);
@@ -148,25 +148,25 @@ public class PropertyTableModel extends XTableModel implements EventListener {
 				if (StringUtils.isBlank(filter)) continue;
 				switch (currentCloumn) {
 					case COLUMN_GROUP:
-						if (currentProperty.getGroup() != null && !currentProperty.getGroup().contains(filter)) {
+						if (currentProperty.getGroup() == null || !currentProperty.getGroup().contains(filter)) {
 							i.remove();
 							continue PROPERTIES_LOOP;
 						}
 						break;
 					case COLUMN_NAME:
-						if (currentProperty.getName() != null && !currentProperty.getName().contains(filter)) {
+						if (currentProperty.getName() == null || !currentProperty.getName().contains(filter)) {
 							i.remove();
 							continue PROPERTIES_LOOP;
 						}
 						break;
 					case COLUMN_VALUE:
-						if (currentProperty.getValue() != null && !currentProperty.getValue().contains(filter)) {
+						if (currentProperty.getValue() == null || !currentProperty.getValue().contains(filter)) {
 							i.remove();
 							continue PROPERTIES_LOOP;
 						}
 						break;
 					case COLUMN_DESC:
-						if (currentProperty.getDescription() != null && !currentProperty.getDescription().contains(filter)) {
+						if (currentProperty.getDescription() == null || !currentProperty.getDescription().contains(filter)) {
 							i.remove();
 							continue PROPERTIES_LOOP;
 						}
@@ -249,20 +249,20 @@ public class PropertyTableModel extends XTableModel implements EventListener {
 		String oldName = p.getName();
 		switch (columnIndex) {
 			case COLUMN_GROUP:
-				p.setGroup(value.toString());
+				p.setGroup(value == null ? null : value.toString());
 				break;
 			case COLUMN_NAME:
 				try {
-					p.setName(value.toString());
+					p.setName(value == null ? null : value.toString());
 				} catch (PropertiesException e) {
 					SOptionPane.showMessageDialog(null, e.getMessage(), "Error", SOptionPane.ERROR_MESSAGE);
 				}
 				break;
 			case COLUMN_VALUE:
-				p.setValue(value.toString());
+				p.setValue(value == null ? null : value.toString());
 				break;
 			case COLUMN_DESC:
-				p.setDescription(value.toString());
+				p.setDescription(value == null ? null : value.toString());
 				break;
 		}
 

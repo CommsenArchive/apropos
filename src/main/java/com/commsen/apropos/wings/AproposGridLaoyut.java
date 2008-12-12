@@ -16,23 +16,52 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with APropOS.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.commsen.apropos;
+package com.commsen.apropos.wings;
 
-import org.wings.SFrame;
-import org.wings.header.Link;
-import org.wings.resource.ClassPathResource;
-
-import com.commsen.apropos.web.MainFrame;
+import org.wings.SConstants;
+import org.wings.SGridLayout;
+import org.wings.plaf.css.GridLayoutCG;
 
 /**
  * @author Milen Dyankov
  * 
  */
-public class AproposWebMain {
+public class AproposGridLaoyut extends SGridLayout {
 
-	public AproposWebMain() {
-		SFrame mainFrame = new MainFrame();
-		mainFrame.addHeader(new Link("stylesheet", null, "text/css", null, new ClassPathResource("apropos.css", "text/css")));
-		mainFrame.show();
+	public AproposGridLaoyut() {
+		super();
+		changeVerticalAligment();
 	}
+
+
+	public AproposGridLaoyut(int rows, int cols, int hgap, int vgap) {
+		super(rows, cols, hgap, vgap);
+		changeVerticalAligment();
+	}
+
+
+	public AproposGridLaoyut(int rows, int cols) {
+		super(rows, cols);
+		changeVerticalAligment();
+	}
+
+
+	public AproposGridLaoyut(int cols) {
+		super(cols);
+		changeVerticalAligment();
+	}
+
+
+	/**
+	 * 
+	 */
+	private void changeVerticalAligment() {
+		setCG(new GridLayoutCG() {
+			@Override
+			public int getDefaultLayoutCellVAlignment() {
+				return SConstants.TOP;
+			}
+		});
+	}
+
 }

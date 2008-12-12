@@ -137,21 +137,21 @@ public class PropertyPackagesNavigator extends SPanel implements EventListener {
 
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SOptionPane.showQuestionDialog(deleteButton, "Going to delete properties package " + AproposSession.getCurrentPropertyPackage().getName() + "! Are you sure?",
-				        "Deleting selected package", new ActionListener() {
-					        public void actionPerformed(ActionEvent event) {
-						        if (event.getActionCommand().equals(SOptionPane.OK_ACTION)) {
-							        try {
-								        PropertyPackage currentPackage = AproposSession.getCurrentPropertyPackage();
-								        PropertiesManager.deletePropertyPackage(currentPackage.getName());
-								        AproposSession.setCurrentPropertyPackage(currentPackage.getParent());
-								        EventManager.getInstance().sendEvent(Event.PACKAGE_DELETED);
-							        } catch (PropertiesException e) {
-								        SOptionPane.showMessageDialog(deleteButton, e.getMessage(), "Error", SOptionPane.ERROR_MESSAGE);
-							        }
-						        }
-					        }
-				        });
+				SOptionPane.showQuestionDialog(deleteButton, "Going to delete properties package \"" + AproposSession.getCurrentPropertyPackage().getName()
+				        + "\" together with all sub-packages! Are you sure?", "Deleting selected package", new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						if (event.getActionCommand().equals(SOptionPane.OK_ACTION)) {
+							try {
+								PropertyPackage currentPackage = AproposSession.getCurrentPropertyPackage();
+								PropertiesManager.deletePropertyPackage(currentPackage.getName());
+								AproposSession.setCurrentPropertyPackage(currentPackage.getParent());
+								EventManager.getInstance().sendEvent(Event.PACKAGE_DELETED);
+							} catch (PropertiesException e) {
+								SOptionPane.showMessageDialog(deleteButton, e.getMessage(), "Error", SOptionPane.ERROR_MESSAGE);
+							}
+						}
+					}
+				});
 			}
 		});
 		return result;

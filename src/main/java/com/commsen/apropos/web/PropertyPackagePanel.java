@@ -18,6 +18,11 @@
  */
 package com.commsen.apropos.web;
 
+import static com.commsen.apropos.web.dialog.AddPropertyDialog.PropertyDialogField.DESCRIPTION;
+import static com.commsen.apropos.web.dialog.AddPropertyDialog.PropertyDialogField.GROUP;
+import static com.commsen.apropos.web.dialog.AddPropertyDialog.PropertyDialogField.NAME;
+import static com.commsen.apropos.web.dialog.AddPropertyDialog.PropertyDialogField.VALUE;
+
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,20 +33,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.wings.SAnchor;
 import org.wings.SBorderLayout;
 import org.wings.SButton;
 import org.wings.SCheckBox;
 import org.wings.SConstants;
-import org.wings.SDefaultCellEditor;
 import org.wings.SDimension;
 import org.wings.SFlowLayout;
 import org.wings.SOptionPane;
 import org.wings.SPanel;
 import org.wings.SScrollPane;
 import org.wings.STable;
-import org.wings.STextField;
 import org.wings.border.SEmptyBorder;
 import org.wings.event.SMouseEvent;
 import org.wings.event.SMouseListener;
@@ -54,8 +59,9 @@ import com.commsen.apropos.web.dialog.ImportPropertiesDialog;
 import com.commsen.apropos.web.event.Event;
 import com.commsen.apropos.web.event.EventListener;
 import com.commsen.apropos.web.event.EventManager;
-import com.commsen.apropos.web.renderer.EditableTableTextFieldRederer;
+import com.commsen.apropos.web.renderer.PropertiesTableCellEditor;
 import com.commsen.apropos.web.renderer.PropertiesTableCellRederer;
+import com.commsen.apropos.web.renderer.PropertiesTableFilterRederer;
 
 /**
  * @author Milen Dyankov
@@ -72,6 +78,8 @@ public class PropertyPackagePanel extends SPanel implements EventListener {
 	private final SCheckBox showAll = new SCheckBox("show parent properties", AproposSession.showParentProperties());
 
 	private SAnchor export = new SAnchor();
+
+	final SButton deleteSelectedButton = new SButton("Delete selected");
 
 
 	public PropertyPackagePanel() {
@@ -129,7 +137,7 @@ public class PropertyPackagePanel extends SPanel implements EventListener {
 		});
 		buttons.add(addPropertyButton);
 
-		final SButton deleteSelectedButton = new SButton("delete selected");
+		deleteSelectedButton.setEnabled(false);
 		deleteSelectedButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				final int[] selectedRows = table.getSelectedRows();
@@ -198,52 +206,58 @@ public class PropertyPackagePanel extends SPanel implements EventListener {
 				int row = table.rowAtPoint(e.getPoint());
 				if (tableModel.isParentProperty(row)) {
 					e.consume();
-					AddPropertyDialog addPropertyDialog = new AddPropertyDialog();
-					addPropertyDialog.getGroupField().setText((String) tableModel.getValueAt(row, 0));
-					addPropertyDialog.getPropertyField().setText((String) tableModel.getValueAt(row, 1));
-					addPropertyDialog.getPropertyField().setEditable(false);
-					addPropertyDialog.getValueField().setText((String) tableModel.getValueAt(row, 2));
-					addPropertyDialog.getDescriptionField().setText((String) tableModel.getValueAt(row, 3));
+					AddPropertyDialog addPropertyDialog = new AddPropertyDialog("Overwrite parent property");
+					addPropertyDialog.setField(GROUP, (String) tableModel.getValueAt(row, 0));
+					addPropertyDialog.setField(NAME, (String) tableModel.getValueAt(row, 1), false);
+					addPropertyDialog.setField(VALUE, (String) tableModel.getValueAt(row, 2));
+					addPropertyDialog.setField(DESCRIPTION, (String) tableModel.getValueAt(row, 3));
+
 					addPropertyDialog.setAutoClose(true);
+
 					addPropertyDialog.show(table);
 				}
 			}
 		});
 
-		STextField editorField = new STextField();
-		editorField.setPreferredSize(new SDimension("100%", null));
-
-		SDefaultCellEditor defaultCellEditor = new SDefaultCellEditor(editorField);
+		table.addSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if (table.getSelectedRowCount() > 0) {
+					deleteSelectedButton.setEnabled(true);
+				} else {
+					deleteSelectedButton.setEnabled(false);
+				}
+			}
+		});
 
 		XTableColumn columnGroup = getColumn(table, 0);
 		columnGroup.setSortable(true);
-		columnGroup.setFilterRenderer(new EditableTableTextFieldRederer());
+		columnGroup.setFilterRenderer(new PropertiesTableFilterRederer());
 		columnGroup.setFilterable(true);
-		columnGroup.setCellEditor(defaultCellEditor);
+		columnGroup.setCellEditor(new PropertiesTableCellEditor());
 		columnGroup.setCellRenderer(new PropertiesTableCellRederer());
 		columnGroup.setWidth("10%");
 
 		XTableColumn columnName = getColumn(table, 1);
 		columnName.setSortable(true);
-		columnName.setFilterRenderer(new EditableTableTextFieldRederer());
+		columnName.setFilterRenderer(new PropertiesTableFilterRederer());
 		columnName.setFilterable(true);
-		columnName.setCellEditor(defaultCellEditor);
+		columnName.setCellEditor(new PropertiesTableCellEditor());
 		columnName.setCellRenderer(new PropertiesTableCellRederer());
 		columnName.setWidth("20%");
 
 		XTableColumn columnValue = getColumn(table, 2);
 		columnValue.setSortable(true);
-		columnValue.setFilterRenderer(new EditableTableTextFieldRederer());
+		columnValue.setFilterRenderer(new PropertiesTableFilterRederer());
 		columnValue.setFilterable(true);
-		columnValue.setCellEditor(defaultCellEditor);
+		columnValue.setCellEditor(new PropertiesTableCellEditor());
 		columnValue.setCellRenderer(new PropertiesTableCellRederer());
 		columnValue.setWidth("35%");
 
 		XTableColumn columnDescription = getColumn(table, 3);
 		columnDescription.setSortable(true);
-		columnDescription.setFilterRenderer(new EditableTableTextFieldRederer());
+		columnDescription.setFilterRenderer(new PropertiesTableFilterRederer());
 		columnDescription.setFilterable(true);
-		columnDescription.setCellEditor(defaultCellEditor);
+		columnDescription.setCellEditor(new PropertiesTableCellEditor());
 		columnDescription.setCellRenderer(new PropertiesTableCellRederer());
 		columnDescription.setWidth("35%");
 

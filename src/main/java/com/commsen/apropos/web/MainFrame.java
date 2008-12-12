@@ -86,7 +86,7 @@ public class MainFrame extends SFrame {
 		result.setBorder(new SEmptyBorder(new Insets(5, 5, 5, 5)));
 		result.setVerticalAlignment(SConstants.CENTER);
 
-		SLabel title = new SLabel("aPropOS");
+		SLabel title = new SLabel("APropOS");
 		title.setFont(new SFont("Verdana", SFont.BOLD, 16));
 		title.setForeground(Color.WHITE);
 		title.setVerticalAlignment(SConstants.CENTER);
