@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.commsen.apropos.core.PropertiesManager;
@@ -51,8 +52,9 @@ public class DownloadPropertiesServlet extends HttpServlet {
 		}
 
 		PropertyPackage propertyPackage = PropertiesManager.getPropertyPackage(name.trim());
+		StringEscapeUtils.escapeHtml(name);
 		if (propertyPackage == null) {
-			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Property package called " + name + " was not found!");
+			resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Property package called " + StringEscapeUtils.escapeHtml(name) + " was not found!");
 			return;
 		}
 
@@ -68,7 +70,7 @@ public class DownloadPropertiesServlet extends HttpServlet {
 			resp.setContentType("text/xml; charset=UTF-8");
 			propertyPackage.asProperties().storeToXML(resp.getOutputStream(), "Property file obtained from " + req.getRequestURI());
 		} else {
-			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unsupported type: " + type + " !");
+			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unsupported type: " + StringEscapeUtils.escapeHtml(type) + " !");
 			return;
 		}
 

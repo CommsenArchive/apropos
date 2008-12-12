@@ -102,10 +102,18 @@ public class PropertiesManager {
 	 */
 	private static void load() {
 		if (dataFile.exists() && dataFile.isFile()) {
+			FileInputStream dataStream = null;
 			try {
-				instance = (PropertiesManager) xStream.fromXML(new FileInputStream(dataFile));
+				dataStream = new FileInputStream(dataFile);
+				instance = (PropertiesManager) xStream.fromXML(dataStream);
 			} catch (FileNotFoundException e) {
 				throw new InternalError(e.getMessage());
+			} finally {
+				if (dataStream != null) try {
+					dataStream.close();
+				} catch (IOException e) {
+					// oops failed to close stream
+				}
 			}
 			for (PropertyPackage rootPackage : instance.rootPackages) {
 				addToAllPackages(rootPackage);
@@ -151,10 +159,18 @@ public class PropertiesManager {
 	 * class after modifying any data.
 	 */
 	private static void save() {
+		FileOutputStream fileStream = null;
 		try {
-			xStream.toXML(instance, new FileOutputStream(dataFile));
+			fileStream = new FileOutputStream(dataFile);
+			xStream.toXML(instance, fileStream);
 		} catch (FileNotFoundException e) {
 			throw new InternalError(e.getMessage());
+		} finally {
+			if (fileStream != null) try {
+				fileStream.close();
+			} catch (IOException e) {
+				// oops failed to close stream
+			}
 		}
 	}
 
