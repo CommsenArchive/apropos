@@ -1,0 +1,17 @@
+<assembly>
+	<id>src</id>
+	<formats>
+		<format>tar.gz</format>
+		<format>zip</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+			<includes>
+				<include>COPYING*</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>src</directory>
+		</fileSet>
+	</fileSets>
+</assembly>

@@ -8,7 +8,7 @@
 	<groupId>com.commsen</groupId>
 	<artifactId>apropos</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<name>APropOS</name>
 	<url>http://apropos.sourceforge.net/</url>
 	<inceptionYear>2008</inceptionYear>
@@ -100,6 +100,14 @@
 				<configuration>
 					<target>1.5</target>
 					<source>1.5</source>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/src.xml</descriptor>
+					</descriptors>
 				</configuration>
 			</plugin>
 		</plugins>
