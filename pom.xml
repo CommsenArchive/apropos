@@ -142,4 +142,11 @@
 		</plugins>
 	</reporting>
 
+	<distributionManagement>
+		<site>
+			<id>apropos.sf.net</id>
+			<url>scp://shell.sourceforge.net/home/groups/a/ap/apropos/htdocs/</url>
+		</site>
+	</distributionManagement>
+	
 </project>
