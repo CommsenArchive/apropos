@@ -1,0 +1,39 @@
+	------
+	APropOS 
+	------
+	Milen Dyankov
+	------
+
+APropOS
+~~~~~~~~~~
+		
+		Application Properties Organized and Stored in central location. That's main purpose of APropOS. 
+		This simple web application allows developers to put their application/build/i18n/...
+		properties in a single place and access them from wherever they like. Here is what it looks like:
+
+[img/apropos01.png]
+ 	
+Motivation
+~~~~~~~~~~
+
+	APropOS started as a proof of concept. Basically it tried to solve the annoying problem of keeping up-to-date with 
+	adding and removing properties as well as changing their values during the development of one quite big project. 
+
+* The problem 	
+
+	The above mentioned project uses {{{http://ant.apache.org/}Apache Ant}} for building versions on many different 
+	machines (developers',	staging, production). There is a \<project-name\>.properties file per machine/user containing 
+	instance specific configuration (things like database connection strings, local path,	LDAP settings, ...). 
+	Some of this properties	are often the same for a given team or set of instances but other may be unique! 
+	Some affect the build process and, for example, add modules, other are environment or purpose specific.
+	 
+	With over 350 properties (at the time of writing) and a few teams working on different parts of the same project
+	at the same time, it is really hard to know what properties one needs to set with what values.    
+
+* The solution 
+
+	The idea was to organize properties in a tree structure, place it in a central location and modify the build to
+	get it form there instead if using local files. This brings the power of inheritance and allows instances to 
+	overwrite only a small subset of properties. This way modifying a property in a parent node will be automatically 
+	picked by all child nodes (as long as they do not overwrite it). 
+

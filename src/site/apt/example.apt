@@ -1,0 +1,77 @@
+	------
+	Apropos simple example configuration
+	------
+	Milen Dyankov
+	------
+	
+
+Usage example 
+~~~~~~~~~~~~~	
+	
+	Here is an example of how properties could be organized using apropos. Place note, this is an example, not 
+	recommendation or requirement. You could organize your properties in any way you like.
+	
+	
+* First things first 	
+
+	We start by creating the base package for sample project. Here we place kind of global properties which 
+	are modified very rear if ewer?
+
+[img/uc_01.png]       
+
+
+* Build properties
+
+	Next we create a sub-package for build properties and add a few more properties regarding JSP pre-compilation,
+	ignoring compiler warnings, etc. This package can be used on pre-production machine for example. 
+	Notice how inherited properties are "faded" when "show parent properties" checkbox is selected. 
+	
+[img/uc_02.png]
+   
+	But team 1 is working on cool new feature and on their test server they want to have JSP pages pre-comiled. 
+	They also would like to be notified on any build failure. So they make their own build package and 
+	overwrite "compileJsp", "mail.onBuildFailure" and "mail.onBuildFailure.recipients" properties.
+
+[img/uc_03.png]
+
+	Now, John is a member of team 1 and during development he compiles and runs this sample project on his own
+	computer. John could keep it's properties in a local file but then he may not notice an important change 
+	and write code that works locally but fails to run on pre-production. Therefore John decides to add his own 
+	package of build properties and only overwrite what makes sense for his local builds.
+	
+[img/uc_04.png]
+
+	Alice, another team 1 member, is also extending build properties. She knows compiler warnings exists for a 
+	reason, but they make too much noise so she decides to ignore them for some time. That's why she overwrites the
+	"ignore.warnings" property with value of "true". Note how the property value is "highlighted" indicating that
+	a parent property was overwritten but value didn't change. 
+        
+[img/uc_05.png]
+
+	In a very similar way team 2 and it members add their own build properties. 
+
+[img/uc_06.png]
+
+
+
+* Database related properties
+
+	For database related properties we use the same structure. This allows team to switch to different database 
+	by simply overwriting the "db.host", "db.port" or "db.schema" property.
+	
+[img/uc_07.png]
+   
+
+* Locations properties 
+
+	Finally we add file locations in a very similar way. The difference is that base package is overwritten with 
+	platform specific instead of team specific values.  Note the comment saying that "log.error.dir" and 
+	"log.info.dir" are relative to "log.dir". This allows to simply overwrite "log.dir" (with "C:\path" for windows 
+	and "/var/log/path" for linux)
+	
+[img/uc_08.png]
+	
+	
+	
+	
+	    

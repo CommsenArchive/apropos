@@ -1,0 +1,44 @@
+	------
+	Apropos download and install
+	------
+	Milen Dyankov
+	------
+	
+
+Download the current release
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+	
+	The latest release can be downloaded from {{{http://sourceforge.net/project/showfiles.php?group_id=247394}SourceForge}}
+
+
+Build from source 
+~~~~~~~~~~~~~~~~~
+	
+	Apropos uses {{{http://git.or.cz/}Git}} Version Control System. 
+	Public repo is hosted at {{{http://github.com/azzazzel/apropos/tree/master}GitHub}}.
+	To get the source, once you have installed Git, issue this command:
+	
++--------------------------------------------------------------------------------------+
+$ git git://github.com/azzazzel/apropos.git apropos
++--------------------------------------------------------------------------------------+
+
+	This will make a new folder called "apropos" containing the working copy as well as cloned repo. 
+	
+	Apropos uses {{{http://maven.apache.org}Maven}} build system so you need to have Maven installed in oder to build Apropos. 
+	To generate WAR file simply execute:  
+
++--------------------------------------------------------------------------------------+
+$ mvn package
++--------------------------------------------------------------------------------------+
+	
+	This will compile classes and generate apropos.war in a folder called target.
+	
+	
+Installation
+~~~~~~~~~~~~
+
+	Having apropos.war (either downloaded or built from source) all you have to do is to copy 
+	it into the webapps directory of your application server (e.g. Tomcat or Jetty). Then point 
+	your browser to http://localhost:8080/apropos 
+	
+	

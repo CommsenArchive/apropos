@@ -1,0 +1,128 @@
+	------
+	Using Apropos with Ant 
+	------
+	Milen Dyankov
+	------
+	
+
+Configure Ant to use Apropos  
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	Since Ant can load properties form any URL and Apropos can export properties in a standard format, the integration of 
+	both is	quite simple. All you need to do is to note the export URL of your package and tell Ant's to  get properties 
+	from there.
+
+* The basics 
+	
+** Find correct export URL
+
+	The export URL is the one that appears in your browser's location after you click on "Export" button. It is of
+	the following form :
+	
++------------------------------------------------------------+ 	
+ http://HOST:PORT/PATH/get?name=PACKAGE_NAME&type=properties
++------------------------------------------------------------+ 	
+
+	So, assuming your server runs on localhost (port 8080) and you haven't changed the application name, the export 
+	URL of "alice@team1 build" package from the {{{example.html}example page}} will look like this:
+	 
++------------------------------------------------------------------------------------+ 	
+ http://localhost:8080/apropos/get?name=alice@team1%20build&type=properties
++------------------------------------------------------------------------------------+ 	
+
+** Update build.xml 
+
+	Knowing the correct export URL, configuring Ant comes down to adding the following line to build.xml
+	
++-----------------------------------------------------------------------------------------------------+ 	
+ <property url="http://localhost:8080/apropos/get?name=alice@team1%20build&amp;type=properties"/> 
++-----------------------------------------------------------------------------------------------------+ 	
+
+* Optimizations and hints
+
+** Auto download properties 
+
+	There is really no need to call Apropos on every build. First of all, properties do not change that often and
+	second, but more important, you would probably want to be able to build your project even when Apropos is not
+	available (network problems, server restarts, etc). Ant can download and store files so this comes in handy:
+	
++-----------------------------------------------------------------------------------------------------+ 	
+<get 
+	src="http://localhost:8080/apropos/get?name=alice@team1%20build&amp;type=properties"
+	dest="alice_team1_build.properties"
+	ignoreerrors="true"
+	usetimestamp="true"
+	/>
+<property file="alice_team1_build.properties"/> 
++-----------------------------------------------------------------------------------------------------+ 	
+	
+** Using environment properties to determine what to download  
+
+	There is a one quite big issue with the above example. The build now contains settings specific for Alice  
+	which means build.xml can not be shared among all developers. To work around this an environment properties 
+	can be used:  
+	
++------------------------------------------------------------------------------------------------------------+ 	
+<exec 
+	executable="hostname" 
+	osfamily="unix" 
+	failifexecutionfails="false" 
+	outputproperty="env.COMPUTERNAME"
+	/>
+	
+<property name="env.HOSTNAME" value="${env.COMPUTERNAME}"/>
+<property environment="env"/>
+
+<get 
+	src="http://localhost:8080/apropos/get?name=${env.USER}@${env.HOSTNAME}%20build&amp;type=properties"
+	dest="${env.USER}_${env.HOSTNAME}_build.properties"
+	ignoreerrors="true"
+	usetimestamp="true"
+	/>
+
+<property file="${env.USER}_${env.HOSTNAME}_build.properties"/> 
++------------------------------------------------------------------------------------------------------------+ 	
+	
+	
+** Providing an alternative properties   
+	
+	The above example will work for Alice but it will fail for any user who wishes to used team's default 
+	properties and doesn't have own package in Apropos. For such users and alternative should be provided. 
+	Since Ant does not overwrite property values all wee need to do is to specify few files in order from
+	most specific one to most general one:
+	      
++------------------------------------------------------------------------------------------------------------+ 	
+<exec 
+	executable="hostname" 
+	osfamily="unix" 
+	failifexecutionfails="false" 
+	outputproperty="env.COMPUTERNAME"
+	/>
+	
+<property name="env.HOSTNAME" value="${env.COMPUTERNAME}"/>
+<property environment="env"/>
+
+<get 
+	src="http://localhost:8080/apropos/get?name=${env.USER}@${env.HOSTNAME}%20build&amp;type=properties"
+	dest="${env.USER}_${env.HOSTNAME}_build.properties"
+	ignoreerrors="true"
+	usetimestamp="true"
+	/>
+<get 
+	src="http://localhost:8080/apropos/get?name=${env.HOSTNAME}%20build&amp;type=properties"
+	dest="${env.HOSTNAME}_build.properties"
+	ignoreerrors="true"
+	usetimestamp="true"
+	/>
+<get 
+	src="http://localhost:8080/apropos/get?name=build&amp;type=properties"
+	dest="build.properties"
+	ignoreerrors="true"
+	usetimestamp="true"
+	/>
+
+<property file="${env.USER}_${env.HOSTNAME}_build.properties"/> 
+<property file="${env.HOSTNAME}_build.properties"/> 
+<property file="build.properties"/> 
++------------------------------------------------------------------------------------------------------------+ 	
+	  

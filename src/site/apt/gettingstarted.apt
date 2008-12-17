@@ -1,0 +1,52 @@
+	------
+	Apropos getting started
+	------
+	Milen Dyankov
+	------
+	
+
+Overview 
+~~~~~~~~	
+
+[img/apropos01.png]
+	
+* Packages panel	
+
+	Apropos' layout consist of two main panels. On the left hand side there is a hierarchy tree of packages. 
+	You can add and remove packages as root nodes or as a child of any existing package. 
+	Each package may contains unlimited amount of properties. A property besides traditional key and value 
+	may have group and description.    
+
+* Properties panel
+
+	Once package is selected the right hand side panel displays all the properties in a table. By default this
+	only includes properties defined in current package. To display inherited but not overwritten properties
+	selected "show parent properties" checkbox. Single properties can be added or selected and then deleted 
+	by clicking the appropriate buttons. Import from and export to ".properties" and/or ".XML" files compatible with 
+	{{{http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html}java.util.Properties}}
+	
+	       
+Hints & Features  
+~~~~~~~~~~~~~~~~		
+	
+* Select multiple rows 	
+	
+	To select more than one row use Ctrl + click (for one by one selection)  or Shift + click (for region selection)
+	
+* Edit values / rename properties
+
+	To edit any field of given property simply click on it. The table cell will become editable. 
+	
+* Highlighting inherited or overwritten with the same value 
+	
+	If "show parent properties" the values of parent properties are displayed in gray which	makes them easy to recognize.
+	It is possible (although not recommended) for a parent property to be overwritten in the current package with 
+	exactly the same value.	In most cases it is not desired so a s a warning such properties and highlighted in red.    
+       
+* Overwrite parent properties	
+
+	Clicking on any column in of row representing parent value will open a dialog box allowing you to overwrite 
+	this property's group, value or description in current package. 
+	
+
+	 
